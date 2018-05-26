@@ -20,8 +20,10 @@
 #include <queue>
 #include <regex>
 #include <fstream>
+#include <atomic>
 
 #include "common.hpp"
+#include "ticker.hpp"
 
 using namespace std;
 
@@ -34,11 +36,17 @@ static condition_variable event_cv;
 // with the simulator
 class  CommandGenerator {
 public:
-    CommandGenerator(shared_ptr<queue<Command>>_streamer_ptr):
-                    command_streamer(_streamer_ptr) {};
-    CommandGenerator(shared_ptr<queue<Command>>_streamer_ptr,string _file_name):
-                    command_streamer(_streamer_ptr), file_name(_file_name) {}
-    virtual ~CommandGenerator() {}
+    CommandGenerator(shared_ptr<queue<pair<Command,uint64_t>>>_streamer_ptr,
+                     shared_ptr<Ticker> _tiker):
+                    command_streamer(_streamer_ptr), ticker(_tiker) {};
+    CommandGenerator(shared_ptr<queue<pair<Command,uint64_t>>>_streamer_ptr,
+                     shared_ptr<Ticker> _ticker,
+                     string _file_name):
+                    command_streamer(_streamer_ptr),ticker(_ticker), file_name(_file_name) {}
+    virtual ~CommandGenerator() {
+        command_streamer.reset();
+        ticker.reset();
+    }
     
     // start getting user input from the stdin
     void start() {
@@ -58,12 +66,12 @@ public:
                 iss << line;
                 while(getline(iss, token, ',')) {
                     transform(token.begin(), token.end(), token.begin(), ::tolower);
-#if DEBUG
+#if DEBUG_COMMAND
                     cout<<"receiving: "<<token<<endl;
 #endif
-                    if (token.find("stop")!= string::npos) {
+                    if (token.find("quit")!= string::npos) {
                         lock_guard<mutex> lock(event_m);
-                        exited = true;
+                        exited.store(true,memory_order_release);
                         event_cv.notify_all();
                         break;
                     }
@@ -71,7 +79,8 @@ public:
                         auto cmd = parse_input(token);
                         if (cmd.type!= COMMAND::INVALID_COMMAND) {
                             lock_guard<mutex> lock(event_m);
-                            command_streamer->push(cmd);
+                            // get the command and its arrival timestamp
+                            command_streamer->emplace(cmd, ticker->get_tick());
                             //cout<<"command streamer size: "<<command_streamer->size()<<endl;
                             event_cv.notify_all();
                         } else
@@ -80,8 +89,8 @@ public:
                 }
             }
             lock_guard<mutex> lock(event_m);
-            if (!exited)
-                exited = true;
+            if (!exited.load())
+                exited.store(true,memory_order_release);
             event_cv.notify_all();
             
             //restore cin
@@ -95,12 +104,13 @@ public:
         io_thread.join();
     }
     
-    bool is_exited( ) const { return exited; }
+    bool is_exited( ) const { return exited.load(memory_order_acquire); }
 protected:
-    thread  io_thread;
-    shared_ptr<queue<Command>>command_streamer;
+    shared_ptr<queue<pair<Command,uint64_t>>>command_streamer;
+    shared_ptr<Ticker> ticker;
     string file_name;
-    bool exited = false;
+    thread  io_thread;
+    mutable atomic<bool> exited{false};
     
     // parse a line of string and extract meanful commands
     Command parse_input(string &s) {
@@ -144,11 +154,11 @@ protected:
 #endif
                 return Command(type, stof (match.str()));
             }else {
-                cout<<"Invalid Command. No valid parameter found" << endl;
+                cout<<"ERROR: Invalid Command. No valid parameter found" << endl;
                 return Command(COMMAND::INVALID_COMMAND,-1.0);
             }
         }else {
-            cout<<"No parameter given. Use defaut value"<<endl;
+            cout<<"ERROR: No parameter given. Use defaut value"<<endl;
             return Command(type);
         }
     }

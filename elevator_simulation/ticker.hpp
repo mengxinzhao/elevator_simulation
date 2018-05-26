@@ -28,7 +28,7 @@ static condition_variable ticker_cv;
 class Ticker
 {
 public:
-    virtual ~Ticker() {}
+    virtual ~Ticker() { cout<<"Ticker stopped"<<endl; }
     static shared_ptr<Ticker> make_ticker(shared_future<void> f, float _rate)
     {
         if (!instance)
@@ -51,7 +51,9 @@ public:
     float get_rate () const { return rate ;};
         
     long get_interval() const {return interval.count();}
-        
+    
+    uint64_t get_tick () const {return ticks;}
+    
     bool set_rate (float _rate) {
         if (_rate > 0) {
             rate = _rate;
@@ -65,8 +67,6 @@ public:
         }
     }
     
-    uint64_t ticks = 0;
-    
 protected:
     void tickWrapper() {
         future_status status;
@@ -76,7 +76,7 @@ protected:
                 // notify all listeners
                 lock_guard<mutex> lock(ticker_m);
                 ticks++;
-#if DEBUG
+#if DEBUG_TICKER
                 cout<<"ticks: " << ticks<< endl;
 #endif
                 ticker_cv.notify_all();
@@ -87,6 +87,7 @@ protected:
     shared_future<void> done;
     mutable float rate = 1.0;
     mutable chrono::duration<long, milli>  interval = 1000ms; // base beat
+    atomic <uint64_t> ticks{0} ;
     
 private:
     static shared_ptr<Ticker> instance ;

@@ -16,42 +16,40 @@ int main (){
     using namespace std;
 
     // create a promise and associated shared_future
-    std::promise<void> done;
-    std::shared_future<void> done_future(done.get_future());
+    promise<void> done;
+    shared_future<void> done_future(done.get_future());
     
     auto t1 =Ticker:: make_ticker(done_future);
-    auto t2 =Ticker:: make_ticker(done_future);
     
     // start the threads
     auto x = t1->run();
-    auto y = t2->run();
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(5s);
+    this_thread::sleep_for(5s);
     
     // test a combination of tick rate changes
     t1->set_rate(0.5);
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    this_thread::sleep_for(10s);
     
-    t2->set_rate(-0.5);
-    cout<<"rate: " << t2->get_rate()<< ", "<<t2->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    t1->set_rate(-0.5);
+    cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
+    this_thread::sleep_for(10s);
     
     t1->set_rate(1.2);
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    this_thread::sleep_for(10s);
     
-    t2->set_rate(0);
-    cout<<"rate: " << t2->get_rate()<< ", "<<t2->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    t1->set_rate(0);
+    cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
+    this_thread::sleep_for(10s);
     
     t1->set_rate(2.5);
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    this_thread::sleep_for(10s);
     
-    t2->set_rate(0.2);
-    cout<<"rate: " << t2->get_rate()<< ", "<<t2->get_interval() <<" milliseconds"<<endl;
-    std::this_thread::sleep_for(10s);
+    t1->set_rate(0.2);
+    cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
+    this_thread::sleep_for(10s);
     
     // stop
     done.set_value();
