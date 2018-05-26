@@ -43,10 +43,7 @@ public:
                      shared_ptr<Ticker> _ticker,
                      string _file_name):
                     command_streamer(_streamer_ptr),ticker(_ticker), file_name(_file_name) {}
-    virtual ~CommandGenerator() {
-        command_streamer.reset();
-        ticker.reset();
-    }
+    virtual ~CommandGenerator() {}
     
     // start getting user input from the stdin
     void start() {
@@ -69,23 +66,15 @@ public:
 #if DEBUG_COMMAND
                     cout<<"receiving: "<<token<<endl;
 #endif
-                    if (token.find("quit")!= string::npos) {
+                    auto cmd = parse_input(token);
+                    if (cmd.type!= COMMAND::INVALID_COMMAND) {
                         lock_guard<mutex> lock(event_m);
-                        exited.store(true,memory_order_release);
+                        // get the command and its arrival timestamp
+                        command_streamer->emplace(cmd, ticker->get_tick());
+                        //cout<<"command streamer size: "<<command_streamer->size()<<endl;
                         event_cv.notify_all();
-                        break;
-                    }
-                    else {
-                        auto cmd = parse_input(token);
-                        if (cmd.type!= COMMAND::INVALID_COMMAND) {
-                            lock_guard<mutex> lock(event_m);
-                            // get the command and its arrival timestamp
-                            command_streamer->emplace(cmd, ticker->get_tick());
-                            //cout<<"command streamer size: "<<command_streamer->size()<<endl;
-                            event_cv.notify_all();
-                        } else
-                            cout<<token <<" invalid command" <<endl;
-                    }
+                    } else
+                        cout<<token <<" invalid command" <<endl;
                 }
             }
             lock_guard<mutex> lock(event_m);

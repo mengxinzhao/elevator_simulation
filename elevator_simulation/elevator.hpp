@@ -88,11 +88,13 @@ public:
             cout<< "ERROR: Goto floor number " <<_floor_num<<" can't be negative or bigger than total floors . Remain the current setting: "<< endl;
             return false;
         }else if (location == _floor_num){
-            cout <<"AT floor: "<< _floor_num << "@ time" << ticker->get_tick()<< endl;
+            cout <<"GOTO floor: "<< _floor_num << "@ time " << ticker->get_tick()<< endl;
+            cout <<"AT floor: "<< _floor_num << "@ time " << ticker->get_tick()<< endl;
+            pending_loc = -1;
             return true;
         }else {
             pending_loc = _floor_num;
-            cout <<"GOTO floor: "<< pending_loc << "@ time" << ticker->get_tick()<< endl;
+            cout <<"GOTO floor: "<< pending_loc << "@ time " << ticker->get_tick()<< endl;
             if (!running.load(memory_order_acquire)) {
                 // let the elevator run
                 running.store(true,memory_order_release);
@@ -102,13 +104,13 @@ public:
                             cout<<"Stopped from simulator" << endl;
                             break;
                         }
-#if 0
-                        cout<< "current floor "<< setprecision(2) << location<< "@ time " << ticker->get_tick()<< endl;
+#if DEBUG_ELEVATOR
+                        cout<< "current floor "<< setprecision(2) << location<< "@ time  " << ticker->get_tick()<< endl;
 #endif
                         // check if there is pending task otherwise do nothing
                         if ( pending_loc >= 0 ) {
                             if (location == pending_loc) {
-                                cout<< "AT floor "<<setprecision(2)<< pending_loc<< "@ time" << ticker->get_tick()<< endl;
+                                cout<< "AT floor "<<setprecision(2)<< pending_loc<< "@ time " << ticker->get_tick()<< endl;
                                 pending_loc = -1;
                             }
                             else {
@@ -127,11 +129,9 @@ public:
                             }
                         }
                         // sync to the next clock
-                        /*if (running.load(memory_order_acquire))*/ {
-                            unique_lock<mutex> lk(ticker_m);
-                            ticker_cv.wait(lk);
-                            lk.unlock();
-                        }
+                        unique_lock<mutex> lk(ticker_m);
+                        ticker_cv.wait(lk);
+                        lk.unlock();
                     }
                 });
             }
@@ -146,7 +146,7 @@ public:
         // When stop command is signalled it performs an immediate stop regardless of pending task
         running.store(false,memory_order_release);
         run_thread.join();
-        cout<<"STOPPED "<<"@ time " << ticker->get_tick()<< endl;
+        cout<<"STOPPED "<<"@ time  " << ticker->get_tick()<< endl;
         return true;
     }
     

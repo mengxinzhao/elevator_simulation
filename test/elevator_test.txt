@@ -1,4 +1,11 @@
-Set Floor 6, Set start floor 2, Set speed 1.0, Set start floor 0, goto 0, goto 1, goto 13,goto 2, goto 3, goto 1, goto 6,goto 5, goto, goto 3, stop
-Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 0, Set start floor -3, Start start floor 3, Set speed 1.0, Set speed 0.5, Set start floor 0, goto 0, goto 1, goto 2, goto 3, goto 1, goto 2, goto, goto 3, stop
 Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 0, Set start floor -3, Start start floor 3, Set speed 2.0, Set speed 0.5, Set start floor 0, goto 0, goto 1, goto 2, goto 3, goto 1, goto 2, goto, goto 3, stop
-Set STert floor 3333, Set Floor 4, Set floor 8.0, seT Speed, set SpeEd 1.0, Set sPeed -4.9, Set Speed +12.0, Set start floor 3, Seeett flore 0.4, Set Start Floor -8, Set Start Floor +293, Set start flOOr -2.5,start, set speed 0, goto 5, Goto 0.5, Goto 0, Goto -3.0, Goto 34,Goto -45.9, Goto 1000000, Goto,goto 0, set speed 23.0, goto -129, StOP,Set sPeed -5.9, Set Speed -12.0, Set start floor 2.4, Goto  -8, STOP
+Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 0
+Set Floor -0,Set Floor 6,Set Floor -20,Set start floor 0
+Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 0, Stop
+Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor -1, Stop
+Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 3, Set start floor 6, Stop
+Set start floor -3, Start start floor 3, Set speed 1.0, Set speed 0.5, Set start floor 0, goto 0, goto 1, goto 2, goto 3, goto 1, goto 2, goto, goto 3, stop
+Set Floor,  Set Floor -0,  Set Floor -20, Set Floor 6, Set start floor 0, Set start floor -3, Start start floor 3, Set speed 2.0, Set speed 0.5, Set start floor 0, goto 0, goto 1, goto 2, goto 3, goto 1, goto 2, goto, goto 3, stop, quit
+Set STert floor 3333, Set Floor 4, Set floor 8.0, seT Speed, set SpeEd 1.0, Set sPeed -4.9, Set Speed +12.0, Set start floor 3, Seeett flore 0.4, Set Start Floor -8, Set Start Floor +293, Set start flOOr -2.5,start, set speed 0, goto 5, Goto 0.5, Goto 0, Goto -3.0, Goto 34,Goto -45.9, Goto 1000000, Goto,goto 0, set speed 23.0, goto -129, StOP,Set sPeed -5.9, Set Speed -12.0, Set start floor 2.4, Goto  -8, STOP, quit
+Set Floor 6, Set start floor 2, Set speed 1.0, stop, quit
+Set Floor 6, Set start floor 2, Set speed 0.5, Set start floor 0, goto 0, goto 1, goto 13,goto 2, goto 3, goto 1, goto 6,goto 5, goto, goto 3, stop, Quit

@@ -67,6 +67,8 @@ int main()
         auto lock = unique_lock<mutex>(event_m);
         while (command_streamer->empty() && !cmd_gen.is_exited())
             event_cv.wait(lock);
+        
+        // stop reading from input
         if (cmd_gen.is_exited()) {
             lock.unlock();
             break;
@@ -94,7 +96,6 @@ int main()
     // stop ticker
     done.set_value();
     ticker_thread.join();
-    t1.reset();
-    
+
     return 0;
 }

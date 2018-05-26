@@ -5,7 +5,7 @@
 //  Created by Vesper Zhao on 5/25/18.
 //  Copyright © 2018 home. All rights reserved.
 //
-
+ 
 #include <future>
 #include <thread>
 #include <random>
@@ -56,16 +56,14 @@ int main()
         ticker->run();
     });
     
-    this_thread::sleep_for(1s);
-    
     default_random_engine rand_gen((random_device())());
-    // simulate the each arrival time of goto commands  to the elevator as an independant event
-    // uniform random distribution between [current_time, future_time) 100 ticks away.ideally should be max
-    uniform_int_distribution<uint64_t>distribution(0,10);
+    // simulate the each arrival time of goto commands to the elevator as an independant event
+    // uniform random distribution between [current_time, future_time) 20 ticks away.ideally should be max
+    uniform_int_distribution<uint64_t>distribution(0,20);
     
     Elevator test_elevator(ticker);
     
-    auto command_streamer= shared_ptr<queue<pair<Command, uint64_t>> > (new  queue<pair<Command, uint64_t>> );
+    shared_ptr<queue<pair<Command, uint64_t>>> command_streamer = make_shared<queue<pair<Command, uint64_t>>>();
     CommandGenerator cmd_gen(command_streamer, ticker, "./elevator_test.txt");
     cmd_gen.start();
     // this block simulate the simulator event dispatch
@@ -74,9 +72,14 @@ int main()
         while (command_streamer->empty() && !cmd_gen.is_exited())
             event_cv.wait(lock);
         
+        // stop reading from input
+        if (cmd_gen.is_exited()) {
+            cout<<"Existing issued @ time "<< ticker->get_tick()<< endl;
+            break;
+        }
         // manually change the arrival time here
         // otherwise it is from input
-        auto draw = 5;//distribution(rand_gen);
+        auto draw = distribution(rand_gen);
         command_streamer->front().second += draw;
         
         // wait till the event becomes current
@@ -92,25 +95,16 @@ int main()
         dispatch_elevator_command(command_streamer->front().first, test_elevator);
         command_streamer->pop();
         
-        // stop reading from input
-        if (cmd_gen.is_exited()) {
-            lock.unlock();
-            cout<<"QUIT issued "<< endl;
-            cout<<"Command remains:" << command_streamer->size()<<std::endl;
-            break;
-        }
-        
         lock.unlock();
-        cout.flush();
+        
+
+        
     }
     // flush command streamer
-
-    command_streamer.reset();
     cmd_gen.stop();
 
     done.set_value();
     ticker_thread.join();
-    ticker.reset();
-    
+
     return 0;
 }
