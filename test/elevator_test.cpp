@@ -6,7 +6,6 @@
 //  Copyright © 2018 home. All rights reserved.
 //
  
-#include <future>
 #include <thread>
 #include <random>
 
@@ -48,14 +47,8 @@ int main()
 {
     using namespace std;
     
-    std::promise<void> done;
-    std::shared_future<void> done_future(done.get_future());
-    
-    auto ticker = Ticker:: make_ticker(done_future);
-    ticker->set_rate(10);
-    thread ticker_thread = thread([&]{
-        ticker->run();
-    });
+    auto ticker = Ticker:: make_ticker(10);
+    ticker->start();
     
     auto test_data = read_all_lines("./elevator_test.txt");
     while (!test_data.empty()) {
@@ -106,8 +99,7 @@ int main()
         cmd_gen.stop();
         test_data.pop_back();
     }
-    done.set_value();
-    ticker_thread.join();
 
+    ticker->stop();
     return 0;
 }

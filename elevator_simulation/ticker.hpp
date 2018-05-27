@@ -25,24 +25,38 @@ static condition_variable ticker_cv;
 
 // Ticker works as a heart beat of the simulation
 // Elevator and simulator actions sychronize to a global ticker
+#pragma mark class
+
 class Ticker
 {
 public:
     virtual ~Ticker() { cout<<"Ticker stopped"<<endl; }
-    static shared_ptr<Ticker> make_ticker(shared_future<void> f, float _rate)
+    
+    static shared_ptr<Ticker> make_ticker()
     {
         if (!instance)
-            instance = shared_ptr<Ticker>(new Ticker( f,_rate));
+            instance = shared_ptr<Ticker>(new Ticker());
         return instance;
     }
     
-    static shared_ptr<Ticker> make_ticker(shared_future<void> f)
+    static shared_ptr<Ticker> make_ticker(float _rate)
     {
         if (!instance)
-           instance = shared_ptr<Ticker>(new Ticker(f));
+            instance = shared_ptr<Ticker>(new Ticker(_rate));
         return instance;
     }
     
+    bool start() {
+        ticker_thread = thread([&] {
+            run();
+        });
+        return true;
+    }
+    void stop() {
+        stop_tick.set_value();
+        if (ticker_thread.joinable())
+            ticker_thread.join();
+    }
     // run the ticker
     future<void> run() {
         return async(launch::async, &Ticker::tickWrapper, this);
@@ -69,6 +83,7 @@ public:
     
 protected:
     void tickWrapper() {
+        //shared_future<void >done = stop_tick.get_future();
         future_status status;
         do {
             status = done.wait_for(interval); // waits for interval
@@ -84,19 +99,23 @@ protected:
         } while (status != future_status::ready);
     }
     
+    promise<void> stop_tick;
     shared_future<void> done;
     mutable float rate = 1.0;
     mutable chrono::duration<long, milli>  interval = 1000ms; // base beat
-    atomic <uint64_t> ticks{0} ;
+    atomic <uint64_t> ticks{0};
+    thread ticker_thread;
     
 private:
     static shared_ptr<Ticker> instance ;
     
-    Ticker(shared_future<void> f, float _rate) : done{f} {
+    Ticker(float _rate) {
         set_rate(_rate);
+        done = stop_tick.get_future();
     }
-    
-    Ticker(shared_future<void> f) : done{f} { }
+    Ticker() {
+        done = stop_tick.get_future();
+    }
 };
 
 shared_ptr<Ticker>  Ticker::instance = nullptr;

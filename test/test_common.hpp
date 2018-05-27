@@ -6,8 +6,8 @@
 //  Copyright © 2018 home. All rights reserved.
 //
 
-#ifndef TEST_COMMON_H
-#define TEST_COMMON_H
+#ifndef TEST_COMMON_HPP
+#define TEST_COMMON_HPP
 
 #include <vector>
 #include <string>
@@ -26,4 +26,4 @@ static inline vector<string> read_all_lines(string file_name) {
 }
 
 
-#endif /* TEST_COMMON_H */
+#endif /* TEST_COMMON_HPP */

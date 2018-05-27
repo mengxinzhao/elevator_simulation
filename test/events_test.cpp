@@ -47,16 +47,9 @@ int main()
 {
     using namespace std;
 
-    std::promise<void> done;
-    std::shared_future<void> done_future(done.get_future());
-    
-    auto t1 = Ticker:: make_ticker(done_future);
+    auto t1 = Ticker:: make_ticker();
     t1->set_rate(10);
-    
-    thread ticker_thread = thread([&]{
-        t1->run();
-    });
-    
+    t1->start();
     // let the test clock start
     std::this_thread::sleep_for(50ms);
     
@@ -100,9 +93,8 @@ int main()
         test_data.pop_back();
     }
     
-    // stop ticker
-    done.set_value();
-    ticker_thread.join();
+    // stop tickers
+    t1->stop();
 
     return 0;
 }

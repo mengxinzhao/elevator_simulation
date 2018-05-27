@@ -19,10 +19,11 @@
 #include <iostream>
 #include <iomanip>
 
-
 using namespace std;
 
 // Elevator is a mock object that takes simulation input command and perform a correspoding action
+#pragma mark class
+
 class Elevator {
 public:
     Elevator( shared_ptr<Ticker> _ticker): ticker(_ticker) {}
@@ -107,7 +108,7 @@ public:
                             break;
                         }
 #if DEBUG_ELEVATOR
-                        cout<< "current floor "<< setprecision(4) << location<< "@ time  " << ticker->get_tick()<< endl;
+                        cout<< "current floor "<< setprecision(4) << location<< "@ time " << ticker->get_tick()<< endl;
 #endif
                         // check if there is pending task otherwise do nothing
                         if ( pending_loc >= 0 ) {
@@ -144,6 +145,8 @@ public:
     float get_current_loc() const { return location; }
     
     bool is_running () const {return running.load();}
+    
+    bool is_idle() const { return running.load() && pending_loc<0; } // started but no new task assigned
     
     void stop() {
 

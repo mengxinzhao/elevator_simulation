@@ -16,13 +16,16 @@ int main (){
     using namespace std;
 
     // create a promise and associated shared_future
-    promise<void> done;
-    shared_future<void> done_future(done.get_future());
-    
-    auto t1 =Ticker:: make_ticker(done_future);
-    
+//    promise<void> done;
+//
+//    auto t1 = Ticker:: make_ticker(done.get_future());
+//    auto t2 = Ticker:: make_ticker(done.get_future());
+//
     // start the threads
-    auto x = t1->run();
+    auto t1 = Ticker:: make_ticker();
+    
+    //auto x = t1->run();
+    auto x = t1->start();
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
     this_thread::sleep_for(5s);
     
@@ -43,7 +46,7 @@ int main (){
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
     this_thread::sleep_for(10s);
     
-    t1->set_rate(2.5);
+    t1->set_rate(4.5);
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
     this_thread::sleep_for(10s);
     
@@ -51,7 +54,6 @@ int main (){
     cout<<"rate: " << t1->get_rate()<< ", "<<t1->get_interval() <<" milliseconds"<<endl;
     this_thread::sleep_for(10s);
     
-    // stop
-    done.set_value();
+    t1->stop();
 
 }
