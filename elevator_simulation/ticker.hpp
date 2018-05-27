@@ -6,8 +6,8 @@
 //  Copyright © 2018 home. All rights reserved.
 //
 
-#ifndef TICKER_H
-#define TICKER_H
+#ifndef TICKER_HPP
+#define TICKER_HPP
 
 #include <iostream>
 #include <future>
@@ -101,4 +101,4 @@ private:
 
 shared_ptr<Ticker>  Ticker::instance = nullptr;
 
-#endif /* TICKER_H */
+#endif /* TICKER_HPP */

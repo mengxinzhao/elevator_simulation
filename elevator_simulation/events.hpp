@@ -6,8 +6,8 @@
 //  Copyright © 2018 home. All rights reserved.
 //
 
-#ifndef events_hpp
-#define events_hpp
+#ifndef EVENTS_HPP
+#define EVENTS_HPP
 
 #include <iostream>
 #include <sstream>
@@ -41,20 +41,20 @@ public:
                     command_streamer(_streamer_ptr), ticker(_tiker) {};
     CommandGenerator(shared_ptr<queue<pair<Command,uint64_t>>>_streamer_ptr,
                      shared_ptr<Ticker> _ticker,
-                     string _file_name):
-                    command_streamer(_streamer_ptr),ticker(_ticker), file_name(_file_name) {}
+                     string _seq):
+                    command_streamer(_streamer_ptr),ticker(_ticker), seq(_seq) {}
     virtual ~CommandGenerator() {}
     
     // start getting user input from the stdin
     void start() {
         io_thread =  thread([&] {
-            // for testing only. direct ifstream to cin
+            // for testing only. direct string to cin
+            std::stringstream test_cin;
             streambuf *cinbuf = nullptr;
-            ifstream *ifs = nullptr;
-            if (file_name.length()>0) {
+            if (seq.length()>0) {
+                test_cin << seq;
                 cinbuf = cin.rdbuf();
-                ifs = new ifstream(file_name,ifstream::in);
-                cin.rdbuf(ifs->rdbuf());
+                cin.rdbuf(test_cin.rdbuf());
             }
             string token;
             string line;
@@ -74,7 +74,7 @@ public:
                         //cout<<"command streamer size: "<<command_streamer->size()<<endl;
                         event_cv.notify_all();
                     } else
-                        cout<<token <<" invalid command" <<endl;
+                        cout<<"ERROR: "<< token <<" invalid command" <<endl;
                 }
             }
             lock_guard<mutex> lock(event_m);
@@ -83,9 +83,8 @@ public:
             event_cv.notify_all();
             
             //restore cin
-            if (file_name.length()>0) {
+            if (seq.length()>0) {
                 cin.rdbuf(cinbuf);
-                delete ifs;
             }
         });
     }
@@ -97,7 +96,7 @@ public:
 protected:
     shared_ptr<queue<pair<Command,uint64_t>>>command_streamer;
     shared_ptr<Ticker> ticker;
-    string file_name;
+    string seq; // testing sequence
     thread  io_thread;
     mutable atomic<bool> exited{false};
     
@@ -143,13 +142,13 @@ protected:
 #endif
                 return Command(type, stof (match.str()));
             }else {
-                cout<<"ERROR: Invalid Command. No valid parameter found" << endl;
+                //cout<<"ERROR: Invalid Command. No valid parameter found" << endl;
                 return Command(COMMAND::INVALID_COMMAND,-1.0);
             }
         }else {
-            cout<<"ERROR: No parameter given. Use defaut value"<<endl;
+            //cout<<"ERROR: No parameter given. Use defaut value"<<endl;
             return Command(type);
         }
     }
 };
-#endif /* events_hpp */
+#endif /* EVENTS_HPP */

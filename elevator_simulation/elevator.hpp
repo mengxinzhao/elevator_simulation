@@ -6,8 +6,8 @@
 //  Copyright © 2018 home. All rights reserved.
 //
 
-#ifndef ELEVATOR_H
-#define ELEVATOR_H
+#ifndef ELEVATOR_HPP
+#define ELEVATOR_HPP
 
 #include "common.hpp"
 #include "ticker.hpp"
@@ -35,14 +35,14 @@ public:
         // <= 0 test only for unit test of elevator
         // in real simulation invalid command will never get here
         if (_speed <= 0) {
-            cout<< "ERROR: Speed can't be negative or 0. Remain the current setting: "<< setprecision(2)<< speed << endl;
+            cout<< "ERROR: Speed can't be negative or 0. Remain the current setting: "<< setprecision(4)<< speed << endl;
             return false;
         }else if (running.load(memory_order_acquire)) {
-            cout<< "ERROR: Speed can't be changed after elevator starts. Remain the current setting: "<< setprecision(2)<< speed << endl;
+            cout<< "ERROR: Speed can't be changed after elevator starts. Remain the current setting: "<< setprecision(4)<< speed << endl;
             return false;
         }else {
             speed = _speed;
-            cout<<"SPEED: "<< setprecision(2)<< speed<<endl;
+            cout<<"SPEED: "<< setprecision(4)<< speed<<endl;
             return true;
         }
     }
@@ -51,12 +51,12 @@ public:
     
     bool set_floors(float  _floors) {
         if (_floors <= 0) {
-            cout<< "ERROR: Total floor number " << _floors << "  can't be negative or 0 . Remain the current setting: "
-                << setprecision(2)<< number_floors << endl;
+            cout<< "ERROR: Total floor number " << _floors << "  can't be negative or 0 . Remain the previous setting: "
+                << setprecision(4)<< number_floors << endl;
             return false;
         }else if (running.load(memory_order_acquire)) {
             cout<< "ERROR: Floor can't be changed after elevator starts. Remain the current setting: "
-                << setprecision(2) << number_floors << endl;
+                << setprecision(4) << number_floors << endl;
             return false;
         }else {
             number_floors = _floors;
@@ -68,13 +68,13 @@ public:
     float get_floors() const {return number_floors ;}
     
     bool set_start_floor (float _start_floor ) {
-        if (_start_floor < 0) {
-            cout<< "ERROR: Starting floor number "<< _start_floor << " can't be negative . Remain the current setting: "
-                << setprecision(2)<< start_floor << endl;
+        if (_start_floor < 0 || _start_floor >= number_floors) {
+            cout<< "ERROR: Starting floor number "<< _start_floor <<
+            " can't be negative or equal/bigger than total floor . Remain previous setting: "<< setprecision(4)<< start_floor << endl;
             return false;
         }else if (running.load(memory_order_acquire)) {
             cout<< "ERROR: Starting floor can't be changed after elevator starts. Remain the current setting: "
-                << setprecision(2) << start_floor << endl;
+                << setprecision(4) << start_floor << endl;
             return false;
         }else {
             start_floor = location = _start_floor;
@@ -85,7 +85,9 @@ public:
     
     bool goto_floor (float _floor_num) {
         if (_floor_num < 0 ||_floor_num >= number_floors ) {
-            cout<< "ERROR: Goto floor number " <<_floor_num<<" can't be negative or bigger than total floors . Remain the current setting: "<< endl;
+            cout<< "ERROR: Goto floor number " <<_floor_num<<
+            " can't be negative or bigger than total floors . Remain the previous setting pending floor: "
+            << pending_loc<<endl;
             return false;
         }else if (location == _floor_num){
             cout <<"GOTO floor: "<< _floor_num << "@ time " << ticker->get_tick()<< endl;
@@ -105,12 +107,12 @@ public:
                             break;
                         }
 #if DEBUG_ELEVATOR
-                        cout<< "current floor "<< setprecision(2) << location<< "@ time  " << ticker->get_tick()<< endl;
+                        cout<< "current floor "<< setprecision(4) << location<< "@ time  " << ticker->get_tick()<< endl;
 #endif
                         // check if there is pending task otherwise do nothing
                         if ( pending_loc >= 0 ) {
                             if (location == pending_loc) {
-                                cout<< "AT floor "<<setprecision(2)<< pending_loc<< "@ time " << ticker->get_tick()<< endl;
+                                cout<< "AT floor "<<setprecision(4)<< pending_loc<< "@ time " << ticker->get_tick()<< endl;
                                 pending_loc = -1;
                             }
                             else {
@@ -141,13 +143,16 @@ public:
     
     float get_current_loc() const { return location; }
     
-    bool stop() {
+    bool is_running () const {return running.load();}
+    
+    void stop() {
 
         // When stop command is signalled it performs an immediate stop regardless of pending task
         running.store(false,memory_order_release);
-        run_thread.join();
+        if (run_thread.joinable())
+            run_thread.join();
         cout<<"STOPPED "<<"@ time  " << ticker->get_tick()<< endl;
-        return true;
+        return ;
     }
     
 protected:
@@ -168,4 +173,4 @@ protected:
 
 
 
-#endif /* ELEVATOR_H */
+#endif /* ELEVATOR_HPP */
