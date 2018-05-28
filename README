@@ -1,0 +1,89 @@
+1. Overview of Design
+The design loosely follows discrete event simulation method.There are four classes in the implementation: Simulator,Ticker,CommandGenerator,Elevator.
+
+Simulator class is the major component interfacing with control software. It maintain the state of simulation.
+
+Ticker synchronizes elevator events to its ticks. Simulation speed is controlled by ticker's  interval setting. To the outside, a tick is a basic time unit. Elevator's speed is in relative term to the tick. Ticker is a singleton object in the simulation for the reason that if there  is more object to simulate, the tick remains global.
+
+To receive control software input it uses async_io CommandGenerator to extract all valid commands and push them to a command streamer that feeds event dispatcher.Event dispatcher dispatches commands to a mock elevator and receives its feedback. This data path has no respect to the simulator ticks so to be close to reality as much as possible.
+
+Elevator is a simple state machine based class. Its action synchronizes to the simulator tick. When a command is dispatched in the middle of tick interval, elevator's response is delayed at most by 1 tick.
+
+2. Assumptions
+a).Floor number starts from 0, and ends at total floor-1. Theoretically floor number can be negative to reflect underground levels but to run properly with this concept, control software needs to give extra information as the highest floor or the lowest floor.
+b).None positive value for simulation running rate and elevator speed is invalid.
+c).Goto floor can't go to the floor number that is >= total floor or less than 0.
+
+Source Layout 
+source folder has the class implementation. Command line test tools are in test. Test cases are in elevator_test.txt.
+
+3. Build and Run
+Run Make
+The executables are in build folder. The main executable is simulator. Control software input could be a line of command sequences separated by ',' in which case the simulator considers all of the commands happen at the same time or individual command per line, in which case simulator time stamps each command input. Upon completion of each command, simulator will give its running result and completion time. Time is in unit of its Ticker ticks and monotonically increases.
+
+
+A possible running sequence could look like below.
+In this sequences, user sets a combination of valid and invalid commands and run 3 trials of simulation marked by start and stop commands.
+ 
+Waiting for commands...Enter "Quit" to exit the simulation
+Set Rate 80
+Tick rate: 80  Tick interval set up to 12 milliseconds
+Set Floor 50
+FLOORS: 50
+Set start_floOr 20
+START FLOORS: 20
+Set start_flooR 21
+START FLOORS: 21
+Set Rate 50
+Tick rate: 50  Tick interval set up to 20 milliseconds
+Start
+STARTED  @ time 1957
+Start
+Elevator already started.
+Stop
+STOPPED @ time  2098
+Start
+STARTED  @ time 2154
+Set speed 0.5
+ERROR: set speed 0.5 invalid command
+Set elevator_speed 0.5
+ERROR: Speed can't be changed after elevator starts. Remain the current setting: 0.5
+Stop
+STOPPED @ time  3027
+Set elevator_speed 0.5
+SPEED: 0.5
+Set Floor 80
+FLOORS: 80
+Start
+STARTED  @ time 3769
+Goto 0
+GOTO floor: 0@ time 3969
+AT floor 0@ time 4012
+Goto 5
+GOTO floor: 5@ time 4189
+AT floor 5@ time 4200
+Goto 0
+GOTO floor: 0@ time 4269
+AT floor 0@ time 4280
+Goto 79
+GOTO floor: 79@ time 4338
+Goto 80
+ERROR: Goto floor number 80 can't be negative or bigger than total floors . Remain the previous pending floor: 79
+Goto -1
+ERROR: goto -1 invalid command
+AT floor 79@ time 4497
+Goto 40
+GOTO floor: 40@ time 4662
+Goto 45, GAT floor 40@ time 4741
+oto 44, Goto 43
+GOTO floor: 45@ time 4880
+GOTO floor: 44@ time 4880
+GOTO floor: 43@ time 4880
+AT floor 43@ time 4887
+Stop
+STOPPED @ time  5011
+quit
+Quit issued @ time 5080
+Elevator already stopped
+Ticker stopped
+
