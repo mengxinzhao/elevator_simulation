@@ -9,10 +9,10 @@
 #include <thread>
 #include <random>
 
-#include "../elevator_simulation/common.hpp"
-#include "../elevator_simulation/ticker.hpp"
-#include "../elevator_simulation/elevator.hpp"
-#include "../elevator_simulation/events.hpp"
+#include "../source/common.hpp"
+#include "../source/ticker.hpp"
+#include "../source/elevator.hpp"
+#include "../source/events.hpp"
 #include "./test_common.hpp"
 
 // the test is to perform elevator related commands:

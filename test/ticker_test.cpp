@@ -7,8 +7,8 @@
 //
 
 
-#include "../elevator_simulation/common.hpp"
-#include "../elevator_simulation/ticker.hpp"
+#include "../source/common.hpp"
+#include "../source/ticker.hpp"
 
 // This is to test ticker being able to properly tick according to a set valid interval
 // and ticking value is global

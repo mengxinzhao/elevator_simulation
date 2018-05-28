@@ -12,10 +12,13 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../elevator_simulation/events.hpp"
-#include "../elevator_simulation/common.hpp"
-#include "../elevator_simulation/ticker.hpp"
+#include "../source/events.hpp"
+#include "../source/common.hpp"
+#include "../source/ticker.hpp"
 #include "test_common.hpp"
+
+//extern mutex event_m;
+//extern condition_variable event_cv;
 
 // The test is to test command generator properly picking up valid commands
 // extracting valid parameters and pushing to command queue in asychronized fashion

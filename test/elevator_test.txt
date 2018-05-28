@@ -41,3 +41,4 @@ Stop,Quit
 Quit
 Start
 Start,Quit
+Set elevator_speed 20, Start, set elevator_speed 19, stop
