@@ -1,22 +1,34 @@
-Set Rate -4,Set Floor 1000,Set Floor -1999,Set Floor 0,Set Start Floor -1,Set Start Floor 0,Set start floor 2,Set start floor 1000,Set start floor 10001,Set spped 0.1,Set Speed 0,Set Speed 1,Set Speed 1.5,Goto -3,Goto 1001,Goto  101,Goto 0,Goto 1000,Goto 999
+Set Rate -4,Set Floor 1000,Set Floor -1999,Set Floor 0,Set Start_Floor -1,Set Start_Floor 0,Set start_floor 2,Set start_floor 1000,Set start_floor 10001,Set spped 0.1,Set Elevator_sPeed 0,Set ElEVator_sPeed 1,Set Elevator_speed 1.5,Goto -3,Goto 1001,Goto  101,Goto 0,Goto 1000,Goto 999
 Start,START,StOp,Stop STOPP,Stop
-Set Set,set Rate 0.4,Set STert floor 3333,Set Rate,Set rate -0.4,set RaTe 45,Set Rate +5.0,Set Floor 4,Set floor 8.0,seT Speed,set SpeEd 1.0,Set sPeed -4.9,Set Speed +12.0,Set start floor 3,StART,Seeett flore 0.4,Set Start Floor -8,Set Start Floor +293,Set start flOOr -2.5,start,set speed 0,goto 5,Goto 0.5,Goto 0,Goto -3.0,Goto 34,Goto -45.9,Goto 1000000,Goto,goto 0,Set Rate -2.9,set speed 23.0,goto -129,StOP,Set sPeed -5.9,Set Speed -12.0,Set start floor 2.4,Goto  -8,STOP,START,GOTO 300,Set Start FloOR 4,Stop
+Set Set,set Rate 0.4,Set STert floor 3333,Set Rate,Set rate -0.4,set RaTe 45,Set Rate +5.0,Set Floor 4,Set floor 8.0,seT ElEVator_sPEed,set SpeEd 1.0,Set sPeed -4.9,Set ElEVator_sPeed +12.0,Set start_floor 3,StART,Seeett flore 0.4,Set Start_Floor -8,Set Start_Floor +293,Set start_flOOr -2.5,start,set Elevator_speed 0,goto 5,Goto 0.5,Goto 0,Goto -3.0,Goto 34,Goto -45.9,Goto 1000000,Goto,goto 0,Set Rate -2.9,set Elevator_speed 23.0,goto -129,StOP,Set sPeed -5.9,Set ElEVator_sPeed -12.0,Set start_floor 2.4,Goto  -8,STOP,START,GOTO 300,Set Start_FloOR 4,Stop
 Start,Set Ratteee,garbage commands
-Set Floor 60,Set start floor 2,Set speed 0.5,Set start floor 10,goto 0,goto 14,goto 11,goto 24,goto 32,goto 10,goto 0,goto 11,goto 12,goto 43,stop
-Set Floor -0,Set Floor 6,Set Floor -20,Set start floor 0
-Set Floor 8,Set start floor 0,Set speed 0.5
-Set Floor 8,Set start floor 2,Set speed 0.5,goto 0,goto 1,goto 13,goto 2,goto 7,goto 1,goto 6,goto 5,goto,goto 3,stop
-Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start floor 0,Set start floor -3,Start start floor 3,Set speed 2.0,Set speed 0.5,Set start floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop
-Set start floor -3,Start start floor 3,Set speed 1.0,Set speed 0.5,Set start floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop
-Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start floor 0,Set start floor -3,Start start floor 3,Set speed 2.0,Set speed 0.5,Set start floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop,quit
-Set STert floor 3333,Set Floor 4,Set floor 8.0,seT Speed,set SpeEd 1.0,Set sPeed -4.9,Set Speed +12.0,Set start floor 3,Seeett flore 0.4,Set Start Floor -8,Set Start Floor +293,Set start flOOr -2.5,start,set speed 0,goto 5,Goto 0.5,Goto 0,Goto -3.0,Goto 34,Goto -45.9,Goto 1000000,Goto,goto 0,set speed 23.0,goto -129,StOP,Set sPeed -5.9,Set Speed -12.0,Set start floor 2.4,Goto  -8,STOP,quit
-Set Floor -0,Set Floor 1,Set start floor -1,Set Floor 900,Start Start floor 899
-Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start floor -1,Stop
-Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start floor 3,Set start floor 6,Stop
-Set Start Floor -1,Set Floor 8,Set start floor 1
+Set Floor 60,Set start_floor 2,Set Elevator_speed 0.5,Set start_floor 10,goto 0,goto 14,goto 11,goto 24,goto 32,goto 10,goto 0,goto 11,goto 12,goto 43,stop
+Set Floor -0,Set Floor 6,Set Floor -20,Set start_floor 0
+Set Floor 8,Set start_floor 0,Set Elevator_Speed 0.5
+Set Floor 8,Set start_floor 2,Set Elevator_Speed 0.5,goto 0,goto 1,goto 13,goto 2,goto 7,goto 1,goto 6,goto 5,goto,goto 3,stop
+Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start_floor 0,Set start_floor -3,Start start_floor 3,Set Elevator_Speed 2.0,Set elevator_speed 0.5,Set start_floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop
+Set start_floor -3,Start start_floor 3,Set elevator_speed 1.0,Set Elevator_speed 0.5,Set start_floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop
+Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start_floor 0,Set start_floor -3,Start start_floor 3,Set Elevator_speed 2.0,Set Elevator_speed 0.5,Set start_floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 2,goto,goto 3,stop,quit
+Set STert floor 3333,Set Floor 4,Set floor 8.0,seT ElEVator_sPeed,set SpeEd 1.0,Set sPeed -4.9,Set ElEVator_sPeed +12.0,Set start_floor 3,Seeett flore 0.4,Set Start_Floor -8,Set Start_Floor +293,Set start_flOOr -2.5,start,set Elevator_speed 0,goto 5,Goto 0.5,Goto 0,Goto -3.0,Goto 34,Goto -45.9,Goto 1000000,Goto,goto 0,set elevator_speed 23.0,goto -129,StOP,Set sPeed -5.9,Set ElEVator_sPeed -12.0,Set start_floor 2.4,Goto  -8,STOP,quit
+Set Floor -0,Set Floor 1,Set start_floor -1,Set Floor 900,Start start_floor 899
+Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start_floor -1,Stop
+Set Floor,Set Floor -0,Set Floor -20,Set Floor 6,Set start_floor 3,Set start_floor 6,Stop
+Set StarT_Floor -1,Set Floor 8,Set start_floor 1
 Set Rate
-Set speed 1.0,Goto 3,Goto 1,stop,quit
-Set Floor 9,Set start floor 2,Set speed 0.5,Set start floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 6,goto 5,goto,goto 3,stop
-Set Floor 9,Set start floor 2,Set speed 2,Set start floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 6,goto 5,goto,goto 3,stop
-Set Floor 9,Set start floor 2,Set speed 2,Set start floor 0,goto 0,goto 2,goto 2,goto 4,goto 6,goto 8,goto 4,goto 0,goto 8,stop
+Set Elevator_speed 1.0,Goto 3,Goto 1,stop,quit
+Set Floor 9,Set start_flOOr 2,Set ElevatOr_speed 0.5,Set start_floor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 6,goto 5,goto,goto 3,stop
+Set Floor 9,Set start_floor 2,Set Elevator_Speed 2,Set start_fLoor 0,goto 0,goto 1,goto 2,goto 3,goto 1,goto 6,goto 5,goto,goto 3,stop
+Set Floor 9,Set start_floor 2,Set elevator_SPEED 2,Set start_floor 0,goto 0,Goto 2,gOTo 2,goto 4,GOTO 6,goto 8,goto 4,goto 0,goto 8,stop
 SET raTE 4,Set Rate 0.1
+Goto 1,Goto 1,Goto 1,stop
+Set floor 3, Set start_floor 2, Goto 1,Goto 1,Goto 1,stop
+Set floor 3, Set start_floor 2,Start, Goto 1,Goto 1,Goto 1,stop
+Set Floor 19,Start,Goto 18,Goto 17,Goto 16,Goto 15,Goto 14,Goto 2,Stop,Start,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
+Set Floor 19,Start,Goto 18,Goto 17,Goto 16,Goto 15,Goto 14,Goto 2,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
+set Floor 19,Goto 18,GOTO 17,Goto 16,Goto 15,Goto 14,Goto 2,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
+Start, Stop, Quit
+Quit
+Start,Stop
+Start, Start,Stop
+Start,Start,Stop,Stop
+Start,Stop,Quit

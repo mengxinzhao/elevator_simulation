@@ -31,8 +31,8 @@ struct Simulation_Error: std::runtime_error {
 //TODO: template const and type construction
 static const char  *set_rate_token = "set rate";
 static const char  *set_floors_token = "set floor";
-static const char  *set_speed_token = "set speed";
-static const char  *set_start_floor_token = "set start floor";
+static const char  *set_speed_token = "set elevator_speed";
+static const char  *set_start_floor_token = "set start_floor";
 static const char  *goto_token = "goto";
 static const char  *start_token = "start";
 static const char  *stop_token = "stop";
