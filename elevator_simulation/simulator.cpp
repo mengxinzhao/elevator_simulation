@@ -12,10 +12,7 @@
 int main(){
     using namespace std;
     unique_ptr<Simulator>  simulator = make_unique<Simulator>();
-    
-    simulator->start();
     simulator->run();
-    
     return 0;
     
 }

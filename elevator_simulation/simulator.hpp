@@ -51,6 +51,14 @@ shared_ptr<T> create_shared_ptr(Args &&...args){
 #pragma mark class
 class Simulator {
 public:
+    //simulator state machine
+    enum class SIMULATION_STATE {
+        UNINITIALIZED = -1,        // nothing works for now
+        INITIALIZED,               // ticker and command streamer are in place for action
+        STOPPED,                   // elevator stopped moving
+        STARTED,                   // elevator started moving
+    };
+    
     Simulator () {
         // create components
         ticker = Ticker::make_ticker();
@@ -58,18 +66,10 @@ public:
         command_generator = create_shared_ptr<CommandGenerator>(command_streamer, ticker);
         elevator = create_shared_ptr<Elevator>(ticker);
     }
-    virtual ~Simulator(){
-        stop();
-    }
-    bool start() {
-        if (state.load(memory_order_acquire) >= SIMULATION_STATE::INITIALIZED)
-            return true;
-        ticker->start();
-        command_generator->start();
-        state = SIMULATION_STATE::INITIALIZED;
-        return true;
-    }
+    virtual ~Simulator(){}
+
     void run() {
+        start();
         while (true) {
             auto lock = unique_lock<mutex>(event_m);
             while (command_streamer->empty() && !command_generator->is_exited())
@@ -90,16 +90,20 @@ public:
         }
         stop();
     }
+    
+    SIMULATION_STATE get_state() const { return state; }
+    
 protected:
-    //simulator state machine
-    enum class SIMULATION_STATE {
-                                 UNINITIALIZED = -1,        // nothing works for now
-                                 INITIALIZED,               // ticker and command streamer are in place for action
-                                 STOPPED,                   // elevator stopped moving
-                                 STARTED,                   // elevator started moving
-    };
-    // this member functions is not exposed
-    // the run method eventually calls stop when user quits the simulation
+    // start and stop member functions are not exposed
+    bool start() {
+        if (state.load(memory_order_acquire) >= SIMULATION_STATE::INITIALIZED)
+            return true;
+        ticker->start();
+        command_generator->start();
+        state = SIMULATION_STATE::INITIALIZED;
+        return true;
+    }
+
     void stop() {
         if (state.load(memory_order_acquire)>= SIMULATION_STATE::INITIALIZED) {
             // if users issue quit without stopping the elevator we have to stop it first

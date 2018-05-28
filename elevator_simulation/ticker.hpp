@@ -30,7 +30,7 @@ static condition_variable ticker_cv;
 class Ticker
 {
 public:
-    virtual ~Ticker() { cout<<"Ticker stopped"<<endl; }
+    virtual ~Ticker() {}
     
     static shared_ptr<Ticker> make_ticker()
     {
@@ -53,7 +53,12 @@ public:
         return true;
     }
     void stop() {
-        stop_tick.set_value();
+        cout<<"Ticker stopped"<<endl;
+        try {
+            stop_tick.set_value();
+        }catch (const std::future_error & e) {
+            cout<<e.what()<<endl;
+        }
         if (ticker_thread.joinable())
             ticker_thread.join();
     }
@@ -83,7 +88,6 @@ protected:
     }
 
     void tickWrapper() {
-        //shared_future<void >done = stop_tick.get_future();
         future_status status;
         do {
             status = done.wait_for(interval); // waits for interval
