@@ -1,3 +1,4 @@
+Set Rate 50, Set Rate 0, Set Rate 1.0, Set Rate 0.8, Set Floor 0,Set Floor 80, Set Start_floor 2, set Elevator_Speed 1, Set start_floor 14, STart,Set Rate 20,set floor 3,Set start_flooR 20, Set elevator_speed 20, Goto 9, Goto 0, Goto -1, Goto 100, Goto 20, Goto 9, Goto 79,Set Rate 100, Goto 24, Set Rate 45,Stop, stop, Set Rate 200, Set Floor 40, Set elevator_Speed 0.4,start, Start,  Set start_floor 38, Goto 39, Goto 1, Goto 2, Goto 34, Goto 28 ,Goto 11, Set elevator_Speed 20, Stop, start, stop, quit
 Set Rate -4,Set Floor 1000,Set Floor -1999,Set Floor 0,Set Start_Floor -1,Set Start_Floor 0,Set start_floor 2,Set start_floor 1000,Set start_floor 10001,Set spped 0.1,Set Elevator_sPeed 0,Set ElEVator_sPeed 1,Set Elevator_speed 1.5,Goto -3,Goto 1001,Goto  101,Goto 0,Goto 1000,Goto 999
 Start,START,StOp,Stop STOPP,Stop
 Set Set,set Rate 0.4,Set STert floor 3333,Set Rate,Set rate -0.4,set RaTe 45,Set Rate +5.0,Set Floor 4,Set floor 8.0,seT ElEVator_sPEed,set SpeEd 1.0,Set sPeed -4.9,Set ElEVator_sPeed +12.0,Set start_floor 3,StART,Seeett flore 0.4,Set Start_Floor -8,Set Start_Floor +293,Set start_flOOr -2.5,start,set Elevator_speed 0,goto 5,Goto 0.5,Goto 0,Goto -3.0,Goto 34,Goto -45.9,Goto 1000000,Goto,goto 0,Set Rate -2.9,set Elevator_speed 23.0,goto -129,StOP,Set sPeed -5.9,Set ElEVator_sPeed -12.0,Set start_floor 2.4,Goto  -8,STOP,START,GOTO 300,Set Start_FloOR 4,Stop
@@ -26,9 +27,17 @@ Set floor 3, Set start_floor 2,Start, Goto 1,Goto 1,Goto 1,stop
 Set Floor 19,Start,Goto 18,Goto 17,Goto 16,Goto 15,Goto 14,Goto 2,Stop,Start,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
 Set Floor 19,Start,Goto 18,Goto 17,Goto 16,Goto 15,Goto 14,Goto 2,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
 set Floor 19,Goto 18,GOTO 17,Goto 16,Goto 15,Goto 14,Goto 2,Goto 3,Goto 4,Goto 4,Goto 6,Goto 12,goto 1,Goto 11,stop
+Set Rate 4, Start, Set Floor, Set start_floor 3, Speed 1,Stop,Set Floor 20 , Set start_floor 3, Speed 1, Start, Sart, Stop, Stop,quit
 Start, Stop, Quit
-Quit
 Start,Stop
+Set floor 50
+Set start_floor 20
+Set start_floor 2
+Set elevator_speed 20, Start, set elevator_speed 19, stop
 Start, Start,Stop
 Start,Start,Stop,Stop
 Start,Stop,Quit
+Stop,Quit
+Quit
+Start
+Start,Quit
