@@ -46,17 +46,19 @@ const char* parse_type(COMMAND type) {
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
     using namespace std;
 
+    auto file_name = parse_arguments(argc, argv);
+    if (!file_name.length())
+        return -1;
     auto t1 = Ticker:: make_ticker();
     t1->set_rate(10);
     t1->start();
     // let the test clock start
     std::this_thread::sleep_for(50ms);
-    
-    auto test_data = read_all_lines("./elevator_test.txt");
+    auto test_data = read_all_lines(file_name);
     
     while (!test_data.empty()) {
         cout<<"========================================"<<endl;

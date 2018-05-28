@@ -6,8 +6,13 @@ SRC_EXT := cpp
 
 CC = g++
 CFLAGS = -std=c++14 -Werror 
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+    CFLAGS +=-DDEBUG -g
+endif
+
 LDFLAGS =
-LAST_MODIFIED_CXX_FILE = $(shell ls -rt $(SRC_DIR)/*\.cpp | tail -1)
+LAST_MODIFIED_CXX_FILE = $(shell ls -rt $(SRC_DIR)/*\.cpp && ls -rt $(TEST_DIR)/*\.cpp  | tail -1)
 
 
 SOURCES := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))

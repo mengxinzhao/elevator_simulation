@@ -81,6 +81,7 @@
 		2EAC418520BC62FD00EAF6C0 /* events.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = events.cpp; sourceTree = "<group>"; };
 		2EAC418720BC630400EAF6C0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2EAC418920BC630B00EAF6C0 /* ticker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ticker.cpp; sourceTree = "<group>"; };
+		2EDD6BE820BCA4AE00CF7E23 /* test_common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = test_common.hpp; path = test/test_common.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +156,7 @@
 		2E8E55E720B7C5AF003B3656 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				2EDD6BE820BCA4AE00CF7E23 /* test_common.hpp */,
 				2E8ABBDB20B8E7020099F30D /* elevator_test.cpp */,
 				2E8ABBDD20B8E7240099F30D /* elevator_test.txt */,
 				2E8E55E820B7C5D3003B3656 /* events_test.cpp */,

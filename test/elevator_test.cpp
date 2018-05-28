@@ -44,14 +44,17 @@ void dispatch_elevator_command(Command cmd, Elevator &elv) {
     return;
 }
 
-int main()
+int main(int argc, char **argv)
 {
     using namespace std;
+    auto file_name = parse_arguments(argc, argv);
+    if (!file_name.length())
+        return -1;
     
     auto ticker = Ticker:: make_ticker(100);
     ticker->start();
     
-    auto test_data = read_all_lines("./elevator_test.txt");
+    auto test_data = read_all_lines(file_name);
     while (!test_data.empty()) {
         cout<<"========================================"<<endl;
         default_random_engine rand_gen((random_device())());
