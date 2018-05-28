@@ -16,9 +16,7 @@
 #include "./test_common.hpp"
 
 // the test is to perform elevator related commands:
-// Set Speed, Set Floors, Set Start Floor, Goto
-// Set Rate/Start/Stop is simulator level command
-// But Here I use Stop to stop the testing
+// Set Speed, Set Floors, Set Start Floor, Goto, Start, Stop
 
 void dispatch_elevator_command(Command cmd, Elevator &elv) {
     switch (cmd.type) {
@@ -37,6 +35,9 @@ void dispatch_elevator_command(Command cmd, Elevator &elv) {
         case COMMAND::STOP:
             elv.stop();
             break;
+        case COMMAND::START:
+            elv.start();
+            break;
         default:
             break;
     }
@@ -47,7 +48,7 @@ int main()
 {
     using namespace std;
     
-    auto ticker = Ticker:: make_ticker(10);
+    auto ticker = Ticker:: make_ticker(100);
     ticker->start();
     
     auto test_data = read_all_lines("./elevator_test.txt");
@@ -71,7 +72,8 @@ int main()
             
             // stop reading from input
             if (cmd_gen.is_exited()) {
-                cout<<"Existing issued @ time "<< ticker->get_tick()<< endl;
+                cout<<"Quit issued @ time "<< ticker->get_tick()<< endl;
+                lock.unlock();
                 break;
             }
             // manually change the arrival time here

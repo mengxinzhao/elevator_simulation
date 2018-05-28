@@ -57,10 +57,6 @@ public:
         if (ticker_thread.joinable())
             ticker_thread.join();
     }
-    // run the ticker
-    future<void> run() {
-        return async(launch::async, &Ticker::tickWrapper, this);
-    }
     
     float get_rate () const { return rate ;};
         
@@ -68,20 +64,24 @@ public:
     
     uint64_t get_tick () const {return ticks;}
     
-    bool set_rate (float _rate) {
+    SIMULATION_ERROR set_rate (float _rate) {
         if (_rate > 0) {
             rate = _rate;
             interval = chrono::duration<long, ratio<1,1000> >(static_cast<int>(1000 / rate));
             cout<<"tick interval set up to "<< interval.count()<<" milliseconds"<<endl;
-            return true;
+            return SIMULATION_ERROR::SUCCESS;
         }else{
             cout<<"Rate can't be negative or 0" << endl;
             cout<<"tick interval remains "<< interval.count()<<" milliseconds"<<endl;
-            return false;
+            return SIMULATION_ERROR::INVALID_PARAMETER;
         }
     }
     
 protected:
+    future<void> run() {
+        return async(launch::async, &Ticker::tickWrapper, this);
+    }
+
     void tickWrapper() {
         //shared_future<void >done = stop_tick.get_future();
         future_status status;

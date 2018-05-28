@@ -15,12 +15,6 @@
 int main (){
     using namespace std;
 
-    // create a promise and associated shared_future
-//    promise<void> done;
-//
-//    auto t1 = Ticker:: make_ticker(done.get_future());
-//    auto t2 = Ticker:: make_ticker(done.get_future());
-//
     // start the threads
     auto t1 = Ticker:: make_ticker();
     

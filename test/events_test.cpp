@@ -22,21 +22,21 @@
 // between control software and simulator
 const char* parse_type(COMMAND type) {
     switch (type) {
-        case INVALID_COMMAND:
+        case COMMAND::INVALID_COMMAND:
             return "invalid command";
-        case SET_RATE:
+        case COMMAND::SET_RATE:
             return set_rate_token;
-        case SET_SPEED:
+        case COMMAND::SET_SPEED:
             return  set_speed_token;
-        case SET_FLOORS:
+        case COMMAND::SET_FLOORS:
             return  set_floors_token;
-        case SET_START_FLOOR:
+        case COMMAND::SET_START_FLOOR:
             return set_start_floor_token;
-        case START:
+        case COMMAND::START:
             return start_token;
-        case STOP:
+        case COMMAND::STOP:
             return stop_token;
-        case GOTO:
+        case COMMAND::GOTO:
             return goto_token;
         default:
             return " ";
@@ -68,6 +68,7 @@ int main()
             
             // stop reading from input
             if (cmd_gen.is_exited()) {
+                cout<<"Quit issued"<<endl;
                 lock.unlock();
                 break;
             }

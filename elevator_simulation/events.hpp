@@ -34,6 +34,7 @@ static condition_variable event_cv;
 // CommandGenerator class takes input from stdin in async fashion and
 // pushes commands into the command queue that is interfacing
 // with the simulator
+#pragma mark class
 class  CommandGenerator {
 public:
     CommandGenerator(shared_ptr<queue<pair<Command,uint64_t>>>_streamer_ptr,
@@ -58,8 +59,8 @@ public:
             }
             string token;
             string line;
-            stringstream iss;
             while(getline(cin, line)) {
+                stringstream iss;
                 iss << line;
                 while(getline(iss, token, ',')) {
                     transform(token.begin(), token.end(), token.begin(), ::tolower);
@@ -67,15 +68,20 @@ public:
                     cout<<"receiving: "<<token<<endl;
 #endif
                     auto cmd = parse_input(token);
-                    if (cmd.type!= COMMAND::INVALID_COMMAND) {
+                    if (cmd.type!= COMMAND::INVALID_COMMAND && cmd.type != COMMAND::QUIT) {
                         lock_guard<mutex> lock(event_m);
                         // get the command and its arrival timestamp
                         command_streamer->emplace(cmd, ticker->get_tick());
                         //cout<<"command streamer size: "<<command_streamer->size()<<endl;
                         event_cv.notify_all();
+                    } else if (cmd.type == COMMAND::QUIT && !exited.load()) {
+                        exited.store(true,memory_order_release);
+                        break;
                     } else
                         cout<<"ERROR: "<< token <<" invalid command" <<endl;
                 }
+                if (exited.load())
+                    break;
             }
             lock_guard<mutex> lock(event_m);
             if (!exited.load())
@@ -89,7 +95,13 @@ public:
         });
     }
     void stop() {
-        io_thread.join();
+        lock_guard<mutex> lock(event_m);
+        if (!exited.load())
+            exited.store(true,memory_order_release);
+        event_cv.notify_all();
+        
+        if (io_thread.joinable())
+            io_thread.join();
     }
     
     bool is_exited( ) const { return exited.load(memory_order_acquire); }
@@ -122,6 +134,8 @@ protected:
             return Command(COMMAND::START);
         else if (s.find(stop_token)!= string::npos)
             return Command(COMMAND::STOP);
+        else if (s.find(quit_token)!= string::npos)
+            return Command(COMMAND::QUIT);
         else
             return Command(COMMAND::INVALID_COMMAND,-1.0);
     }
