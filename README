@@ -3,7 +3,7 @@ The design loosely follows discrete event simulation method.There are four class
 
 Simulator class is the major component interfacing with control software. It maintain the state of simulation.
 
-Ticker synchronizes elevator events to its ticks. Simulation speed is controlled by ticker's  interval setting. To the outside, a tick is a basic time unit. Elevator's speed is in relative term to the tick. Ticker is a singleton object in the simulation for the reason that if there  is more object to simulate, the tick remains global.
+Ticker synchronizes elevator events to its ticks. Simulation speed is controlled by ticker's  interval setting. To the outside, a tick is a basic time unit. Elevator's speed is in relative term to the tick. Ticker is a singleton object in the simulation for the reason that if there  is more objects to simulate, the tick remains global.
 
 To receive control software input it uses async_io CommandGenerator to extract all valid commands and push them to a command streamer that feeds event dispatcher.Event dispatcher dispatches commands to a mock elevator and receives its feedback. This data path has no respect to the simulator ticks so to be close to reality as much as possible.
 
@@ -24,7 +24,8 @@ The executables are in build folder. The main executable is simulator. Control s
 
 A possible running sequence could look like below.
 In this sequences, user sets a combination of valid and invalid commands and run 3 trials of simulation marked by start and stop commands.
- 
+
+%simulator 
 Waiting for commands...Enter "Quit" to exit the simulation
 Set Rate 80
 Tick rate: 80  Tick interval set up to 12 milliseconds
